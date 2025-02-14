@@ -73,6 +73,16 @@ namespace razorshark2.Properties {
         /// <summary>
         ///   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap autospin {
+            get {
+                object obj = ResourceManager.GetObject("autospin", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap brille {
             get {
                 object obj = ResourceManager.GetObject("brille", resourceCulture);

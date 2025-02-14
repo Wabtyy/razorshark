@@ -21,11 +21,13 @@ namespace razorshark2
         Timer highlightTimer = new Timer();
         bool autospinActive = false;  // Variable, um den Autospin-Modus zu verfolgen
         bool keepanimationactive = true;
+      
         public Form1()
         {
             InitializeComponent();
             timer.Interval = 50;
             timer.Tick += Timer_Tick;
+            money.Visible = false;
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -37,38 +39,39 @@ namespace razorshark2
         }
         private void BetUp_Click(object sender, EventArgs e)
         {
-            bet.Text = (int.Parse((bet.Text).Replace("â‚¬", "")) * 2).ToString() + "â‚¬";
+            bet.Text = (int.Parse((bet.Text).Replace("€", "")) * 2).ToString() + "€";
         }
 
         private void BetDown_Click(object sender, EventArgs e)
         {
-            bet.Text = (int.Parse((bet.Text).Replace("â‚¬", "")) / 2).ToString() + "â‚¬";
+            bet.Text = (int.Parse((bet.Text).Replace("€", "")) / 2).ToString() + "€";
         }
         void spin()
         {
-            // Stoppe den Timer fÃ¼r vorherige Animationen
+            money.Visible = false;
+            // Stoppe den Timer für vorherige Animationen
             highlightTimer.Stop();
 
-            // Setze alle Slot-HintergrÃ¼nde und Rahmen zurÃ¼ck
+            // Setze alle Slot-Hintergründe und Rahmen zurück
             foreach (var slot in new PictureBox[] { slot1, slot2, slot3, slot4, slot5, slot6, slot7, slot8, slot9, slot10, slot11, slot12 })
             {
                 slot.BackColor = Color.Transparent;
                 slot.BorderStyle = BorderStyle.None;
             }
 
-            // Bereite fÃ¼r den nÃ¤chsten Spin vor
+            // Bereite für den nächsten Spin vor
             keepanimationactive = false;
             timer.Interval = 50;
             winnings.Text = "";
 
-            reihenfolge.Clear(); // LÃ¶sche die Gewinnkombinationen des vorherigen Spins
+            reihenfolge.Clear(); // Lösche die Gewinnkombinationen des vorherigen Spins
 
             // Aktualisiere das Guthaben
-            int bet2 = int.Parse(bet.Text.Replace("â‚¬", ""));
-            int balance2 = int.Parse(balance.Text.Replace("â‚¬", ""));
-            balance.Text = (balance2 - bet2).ToString() + "â‚¬";
+            int bet2 = int.Parse(bet.Text.Replace("€", ""));
+            int balance2 = int.Parse(balance.Text.Replace("€", ""));
+            balance.Text = (balance2 - bet2).ToString() + "€";
 
-            // Setze alle Slot-Bilder zurÃ¼ck
+            // Setze alle Slot-Bilder zurück
             for (int i = 0; i < 12; i++)
             {
                 int random = rnd.Next(0, bilder.Length);
@@ -76,7 +79,7 @@ namespace razorshark2
                 UpdateSlotImage(i);
             }
 
-            // Setze Framecount zurÃ¼ck und starte den Timer fÃ¼r den neuen Spin
+            // Setze Framecount zurück und starte den Timer für den neuen Spin
             frameCount = 0;
             animationInProgress = true;
             timer.Start();
@@ -105,7 +108,7 @@ namespace razorshark2
                 SetFinalImages();
                 timer.Stop();
 
-                if (autospinActive)  // Wenn Autospin aktiv ist, wird der nÃ¤chste Spin sofort ausgelÃ¶st
+                if (autospinActive)  // Wenn Autospin aktiv ist, wird der nächste Spin sofort ausgelöst
                 {
                     Thread.Sleep(1000);
                     spin();
@@ -139,21 +142,17 @@ namespace razorshark2
         {
             try
             {
-                int bet2 = int.Parse(bet.Text.Replace("â‚¬", ""));
+                int bet2 = int.Parse(bet.Text.Replace("€", ""));
                 int totalWinAmount = 0;
                 keepanimationactive = true;
 
-                // Stoppe den Highlight Timer, bevor eine neue Kombination hervorgehoben wird
                 highlightTimer.Stop();
-
-                // Entferne alle vorherigen Highlights
                 foreach (var slot in new PictureBox[] { slot1, slot2, slot3, slot4, slot5, slot6, slot7, slot8, slot9, slot10, slot11, slot12 })
                 {
                     slot.BackColor = Color.Transparent;
                     slot.BorderStyle = BorderStyle.None;
                 }
 
-                // ÃœberprÃ¼fe alle Reihen und Spalten auf Gewinne
                 for (int row = 0; row < 3; row++)
                 {
                     int startIndex = row * 4;
@@ -201,12 +200,26 @@ namespace razorshark2
                     HighlightWinningCombination(new int[] { 3, 6, 9 });
                 }
 
-                // Zeige den Gewinnbetrag an, wenn es einen gibt
                 if (totalWinAmount > 0)
                 {
-                    winnings.Text = totalWinAmount + "â‚¬";
-                    int balance2 = int.Parse(balance.Text.Replace("â‚¬", ""));
-                    balance.Text = (balance2 + totalWinAmount) + "â‚¬";
+                    Task.Run(async () =>
+                    {
+                        await Task.Delay(2000);  // Warte für Animation
+                        Invoke((MethodInvoker)delegate { money.Visible = true; });
+
+                        Invoke((MethodInvoker)delegate { money.moneyRain(totalWinAmount); });
+
+                        await Task.Delay(7000);  // Warte für Geldanimation
+                        Invoke((MethodInvoker)delegate { winnings.Text = totalWinAmount + "€"; });
+
+                        int balance2 = int.Parse(balance.Text.Replace("€", ""));
+                        Invoke((MethodInvoker)delegate { balance.Text = (balance2 + totalWinAmount) + "€"; });
+
+                        if (autospinActive)
+                        {
+                            await Task.Delay(6000); // Falls Gewinn, extra Wartezeit
+                        }
+                    });
                 }
             }
             catch (Exception ex)
@@ -214,6 +227,7 @@ namespace razorshark2
                 // Fehlerbehandlung
             }
         }
+
 
 
 
@@ -231,7 +245,7 @@ namespace razorshark2
             PictureBox[] slots = { slot1, slot2, slot3, slot4, slot5, slot6, slot7, slot8, slot9, slot10, slot11, slot12 };
 
             int phase = 0;   // Steuert die Phasen der Animation
-            int step = 0;    // ZÃ¤hlt Schritte in Phase 2
+            int step = 0;    // Zählt Schritte in Phase 2
             bool forward = true;
             int blinkCount = 0;
 
@@ -248,7 +262,7 @@ namespace razorshark2
                     return;
                 }
 
-                // Setzt alle Gewinn-Slots zurÃ¼ck (entfernt vorherige Highlights)
+                // Setzt alle Gewinn-Slots zurück (entfernt vorherige Highlights)
                 foreach (int index in indices)
                 {
                     slots[index].BackColor = Color.Transparent;
@@ -269,11 +283,11 @@ namespace razorshark2
                     }
                     else
                     {
-                        phase = 1; // NÃ¤chste Phase starten
+                        phase = 1; // Nächste Phase starten
                         step = 0;
                     }
                 }
-                else if (phase == 1) // **Phase 2: Slots einzeln hervorheben (vorwÃ¤rts)**
+                else if (phase == 1) // **Phase 2: Slots einzeln hervorheben (vorwärts)**
                 {
                     if (step < indices.Length)
                     {
@@ -287,7 +301,7 @@ namespace razorshark2
                         step = indices.Length - 1;
                     }
                 }
-                else if (phase == 2) // **Phase 3: Slots einzeln hervorheben (rÃ¼ckwÃ¤rts)**
+                else if (phase == 2) // **Phase 3: Slots einzeln hervorheben (rückwärts)**
                 {
                     if (step >= 0)
                     {
@@ -297,7 +311,7 @@ namespace razorshark2
                     }
                     else
                     {
-                        phase = 0; // ZurÃ¼ck zur ersten Phase (Endlosschleife)
+                        phase = 0; // Zurück zur ersten Phase (Endlosschleife)
                         blinkCount = 0;
                     }
                 }

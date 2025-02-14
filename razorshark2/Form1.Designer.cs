@@ -48,6 +48,8 @@
             slot9 = new PictureBox();
             winnings = new Label();
             label1 = new Label();
+            button2 = new Button();
+            money = new UserControl1();
             ((System.ComponentModel.ISupportInitialize)slot1).BeginInit();
             ((System.ComponentModel.ISupportInitialize)slot2).BeginInit();
             ((System.ComponentModel.ISupportInitialize)slot3).BeginInit();
@@ -111,7 +113,7 @@
             bet.Name = "bet";
             bet.Size = new Size(68, 40);
             bet.TabIndex = 4;
-            bet.Text = "10$";
+            bet.Text = "10€";
             // 
             // balance
             // 
@@ -123,11 +125,12 @@
             balance.Name = "balance";
             balance.Size = new Size(102, 40);
             balance.TabIndex = 5;
-            balance.Text = "1000$";
+            balance.Text = "1000€";
             // 
             // slot1
             // 
             slot1.BackgroundImage = (Image)resources.GetObject("slot1.BackgroundImage");
+            slot1.BackgroundImageLayout = ImageLayout.Zoom;
             slot1.Location = new Point(247, 65);
             slot1.Name = "slot1";
             slot1.Size = new Size(154, 156);
@@ -137,6 +140,7 @@
             // slot2
             // 
             slot2.BackgroundImage = (Image)resources.GetObject("slot2.BackgroundImage");
+            slot2.BackgroundImageLayout = ImageLayout.Zoom;
             slot2.Location = new Point(402, 65);
             slot2.Name = "slot2";
             slot2.Size = new Size(154, 156);
@@ -146,6 +150,7 @@
             // slot3
             // 
             slot3.BackgroundImage = Properties.Resources.Kamera;
+            slot3.BackgroundImageLayout = ImageLayout.Zoom;
             slot3.Location = new Point(557, 65);
             slot3.Name = "slot3";
             slot3.Size = new Size(154, 156);
@@ -155,6 +160,8 @@
             // slot4
             // 
             slot4.BackgroundImage = (Image)resources.GetObject("slot4.BackgroundImage");
+            slot4.BackgroundImageLayout = ImageLayout.Zoom;
+            slot4.BorderStyle = BorderStyle.FixedSingle;
             slot4.Location = new Point(712, 65);
             slot4.Name = "slot4";
             slot4.Size = new Size(154, 156);
@@ -164,6 +171,7 @@
             // slot8
             // 
             slot8.BackgroundImage = (Image)resources.GetObject("slot8.BackgroundImage");
+            slot8.BackgroundImageLayout = ImageLayout.Zoom;
             slot8.Location = new Point(713, 226);
             slot8.Name = "slot8";
             slot8.Size = new Size(154, 156);
@@ -173,6 +181,7 @@
             // slot7
             // 
             slot7.BackgroundImage = (Image)resources.GetObject("slot7.BackgroundImage");
+            slot7.BackgroundImageLayout = ImageLayout.Zoom;
             slot7.Location = new Point(558, 226);
             slot7.Name = "slot7";
             slot7.Size = new Size(154, 156);
@@ -182,6 +191,7 @@
             // slot6
             // 
             slot6.BackgroundImage = (Image)resources.GetObject("slot6.BackgroundImage");
+            slot6.BackgroundImageLayout = ImageLayout.Zoom;
             slot6.Location = new Point(403, 226);
             slot6.Name = "slot6";
             slot6.Size = new Size(154, 156);
@@ -191,6 +201,7 @@
             // slot5
             // 
             slot5.BackgroundImage = (Image)resources.GetObject("slot5.BackgroundImage");
+            slot5.BackgroundImageLayout = ImageLayout.Zoom;
             slot5.Location = new Point(248, 226);
             slot5.Name = "slot5";
             slot5.Size = new Size(154, 156);
@@ -200,6 +211,7 @@
             // slot12
             // 
             slot12.BackgroundImage = (Image)resources.GetObject("slot12.BackgroundImage");
+            slot12.BackgroundImageLayout = ImageLayout.Zoom;
             slot12.Location = new Point(713, 387);
             slot12.Name = "slot12";
             slot12.Size = new Size(154, 156);
@@ -209,6 +221,7 @@
             // slot11
             // 
             slot11.BackgroundImage = (Image)resources.GetObject("slot11.BackgroundImage");
+            slot11.BackgroundImageLayout = ImageLayout.Zoom;
             slot11.Location = new Point(558, 387);
             slot11.Name = "slot11";
             slot11.Size = new Size(154, 156);
@@ -218,6 +231,7 @@
             // slot10
             // 
             slot10.BackgroundImage = (Image)resources.GetObject("slot10.BackgroundImage");
+            slot10.BackgroundImageLayout = ImageLayout.Zoom;
             slot10.Location = new Point(403, 387);
             slot10.Name = "slot10";
             slot10.Size = new Size(154, 156);
@@ -227,6 +241,7 @@
             // slot9
             // 
             slot9.BackgroundImage = (Image)resources.GetObject("slot9.BackgroundImage");
+            slot9.BackgroundImageLayout = ImageLayout.Zoom;
             slot9.Location = new Point(248, 387);
             slot9.Name = "slot9";
             slot9.Size = new Size(154, 156);
@@ -254,6 +269,29 @@
             label1.Size = new Size(0, 128);
             label1.TabIndex = 19;
             // 
+            // button2
+            // 
+            button2.BackColor = Color.DimGray;
+            button2.BackgroundImage = Properties.Resources.autospin;
+            button2.BackgroundImageLayout = ImageLayout.Zoom;
+            button2.Enabled = false;
+            button2.FlatStyle = FlatStyle.Popup;
+            button2.Font = new Font("Sitka Heading", 21.75F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            button2.Location = new Point(863, 562);
+            button2.Name = "button2";
+            button2.Size = new Size(65, 70);
+            button2.TabIndex = 20;
+            button2.UseVisualStyleBackColor = false;
+            button2.Click += button2_Click;
+            // 
+            // money
+            // 
+            money.BackColor = Color.Transparent;
+            money.Location = new Point(865, 46);
+            money.Name = "money";
+            money.Size = new Size(266, 188);
+            money.TabIndex = 21;
+            // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -261,6 +299,8 @@
             BackgroundImage = (Image)resources.GetObject("$this.BackgroundImage");
             BackgroundImageLayout = ImageLayout.Stretch;
             ClientSize = new Size(1137, 649);
+            Controls.Add(money);
+            Controls.Add(button2);
             Controls.Add(label1);
             Controls.Add(winnings);
             Controls.Add(slot12);
@@ -319,5 +359,7 @@
         private PictureBox slot9;
         private Label winnings;
         private Label label1;
+        private Button button2;
+        private UserControl1 money;
     }
 }
